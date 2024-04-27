@@ -107,36 +107,7 @@ to having production-ready services by using Kubernetes capacity to orchestrate 
         <span class="pl-k">for</span> <span class="pl-s1">prompt</span>, <span class="pl-s1">output</span> <span class="pl-c1">in</span> <span class="pl-en">zip</span>(<span class="pl-s1">prompts</span>, <span class="pl-s1">llm_outputs</span>):
             <span class="pl-s1">generations</span>.<span class="pl-en">append</span>(<span class="pl-v">Generation</span>(<span class="pl-s1">prompt</span><span class="pl-c1">=</span><span class="pl-s1">prompt</span>, <span class="pl-s1">text</span><span class="pl-c1">=</span><span class="pl-s1">output</span>))
         <span class="pl-k">return</span> <span class="pl-s1">generations</span></pre><div class="zeroclipboard-container">
-    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="from jina import Executor, requests
-from docarray import DocList, BaseDoc
-
-from transformers import pipeline
-
-
-class Prompt(BaseDoc):
-    text: str
-
-
-class Generation(BaseDoc):
-    prompt: str
-    text: str
-
-
-class StableLM(Executor):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.generator = pipeline(
-            'text-generation', model='stabilityai/stablelm-base-alpha-3b'
-        )
-
-    @requests
-    def generate(self, docs: DocList[Prompt], **kwargs) -> DocList[Generation]:
-        generations = DocList[Generation]()
-        prompts = docs.text
-        llm_outputs = self.generator(prompts)
-        for prompt, output in zip(prompts, llm_outputs):
-            generations.append(Generation(prompt=prompt, text=output))
-        return generations" tabindex="0" role="button">
+ 
       <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
     <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
 </svg>
@@ -276,35 +247,7 @@ class StableLM(Executor):
         ).<span class="pl-s1">images</span>  <span class="pl-c"># image here is in [PIL format](https://pillow.readthedocs.io/en/stable/)</span>
         <span class="pl-s1">result</span>.<span class="pl-s1">tensor</span> <span class="pl-c1">=</span> <span class="pl-s1">np</span>.<span class="pl-en">array</span>(<span class="pl-s1">images</span>)
         <span class="pl-k">return</span> <span class="pl-s1">result</span></pre><div class="zeroclipboard-container">
-    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="import numpy as np
-from jina import Executor, requests
-from docarray import BaseDoc, DocList
-from docarray.documents import ImageDoc
-
-
-class Generation(BaseDoc):
-    prompt: str
-    text: str
-
-
-class TextToImage(Executor):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        from diffusers import StableDiffusionPipeline
-        import torch
-
-        self.pipe = StableDiffusionPipeline.from_pretrained(
-            &quot;CompVis/stable-diffusion-v1-4&quot;, torch_dtype=torch.float16
-        ).to(&quot;cuda&quot;)
-
-    @requests
-    def generate_image(self, docs: DocList[Generation], **kwargs) -> DocList[ImageDoc]:
-        result = DocList[ImageDoc]()
-        images = self.pipe(
-            docs.text
-        ).images  # image here is in [PIL format](https://pillow.readthedocs.io/en/stable/)
-        result.tensor = np.array(images)
-        return result" tabindex="0" role="button">
+   
       <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
     <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
 </svg>
@@ -385,23 +328,7 @@ class TextToImage(Executor):
 <span class="pl-s1">response</span> <span class="pl-c1">=</span> <span class="pl-s1">client</span>.<span class="pl-en">post</span>(<span class="pl-s1">on</span><span class="pl-c1">=</span><span class="pl-s">'/'</span>, <span class="pl-s1">inputs</span><span class="pl-c1">=</span>[<span class="pl-s1">prompt</span>], <span class="pl-s1">return_type</span><span class="pl-c1">=</span><span class="pl-v">DocList</span>[<span class="pl-v">ImageDoc</span>])
 
 <span class="pl-s1">response</span>[<span class="pl-c1">0</span>].<span class="pl-en">display</span>()</pre><div class="zeroclipboard-container">
-    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="from jina import Client
-from docarray import DocList, BaseDoc
-from docarray.documents import ImageDoc
-
-
-class Prompt(BaseDoc):
-    text: str
-
-
-prompt = Prompt(
-    text='suggest an interesting image generation prompt for a mona lisa variant'
-)
-
-client = Client(port=12345)  # use port from output above
-response = client.post(on='/', inputs=[prompt], return_type=DocList[ImageDoc])
-
-response[0].display()" tabindex="0" role="button">
+  
       <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
     <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
 </svg>
@@ -454,19 +381,7 @@ response[0].display()" tabindex="0" role="button">
     <span class="pl-ent">/default</span>:
       <span class="pl-ent">preferred_batch_size</span>: <span class="pl-c1">10</span>
       <span class="pl-ent">timeout</span>: <span class="pl-c1">200</span></pre><div class="zeroclipboard-container">
-    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="jtype: Deployment
-with:
-  uses: TextToImage
-  timeout_ready: -1
-  py_modules:
-    - text_to_image.py
-  env:
-   CUDA_VISIBLE_DEVICES: RR
-  replicas: 2
-  uses_dynamic_batching: # configure dynamic batching
-    /default:
-      preferred_batch_size: 10
-      timeout: 200" tabindex="0" role="button">
+   
       <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
     <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
 </svg>
@@ -625,17 +540,7 @@ jina cloud deploy jcloud-flow.yml</pre><div class="zeroclipboard-container">
     <span class="pl-k">def</span> <span class="pl-en">__init__</span>(<span class="pl-s1">self</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>):
         <span class="pl-en">super</span>().<span class="pl-en">__init__</span>(<span class="pl-c1">**</span><span class="pl-s1">kwargs</span>)
         <span class="pl-s1">self</span>.<span class="pl-s1">model</span> <span class="pl-c1">=</span> <span class="pl-v">GPT2LMHeadModel</span>.<span class="pl-en">from_pretrained</span>(<span class="pl-s">'gpt2'</span>)</pre><div class="zeroclipboard-container">
-    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="from jina import Executor, requests
-from transformers import GPT2Tokenizer, GPT2LMHeadModel
-import torch
-
-tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
-
-
-class TokenStreamingExecutor(Executor):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.model = GPT2LMHeadModel.from_pretrained('gpt2')" tabindex="0" role="button">
+   
       <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
     <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
 </svg>
@@ -666,27 +571,7 @@ class TokenStreamingExecutor(Executor):
                 <span class="pl-s">'input_ids'</span>: <span class="pl-s1">output</span>,
                 <span class="pl-s">'attention_mask'</span>: <span class="pl-s1">torch</span>.<span class="pl-en">ones</span>(<span class="pl-c1">1</span>, <span class="pl-en">len</span>(<span class="pl-s1">output</span>[<span class="pl-c1">0</span>])),
             }</pre><div class="zeroclipboard-container">
-    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="class TokenStreamingExecutor(Executor):
-    ...
-
-    @requests(on='/stream')
-    async def task(self, doc: PromptDocument, **kwargs) -> ModelOutputDocument:
-        input = tokenizer(doc.prompt, return_tensors='pt')
-        input_len = input['input_ids'].shape[1]
-        for _ in range(doc.max_tokens):
-            output = self.model.generate(**input, max_new_tokens=1)
-            if output[0][-1] == tokenizer.eos_token_id:
-                break
-            yield ModelOutputDocument(
-                token_id=output[0][-1],
-                generated_text=tokenizer.decode(
-                    output[0][input_len:], skip_special_tokens=True
-                ),
-            )
-            input = {
-                'input_ids': output,
-                'attention_mask': torch.ones(1, len(output[0])),
-            }" tabindex="0" role="button">
+   
       <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
     <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
 </svg>
